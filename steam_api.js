@@ -14,6 +14,8 @@ require('dotenv').config();
 
 const readStream = fs.createReadStream('storeData.json', { encoding: 'utf8' });
 
+const port = process.env.PORT || 3000;
+
 const storeData = [];
 async function streamStoreData() {
   await new Promise((resolve, reject) => {
@@ -30,6 +32,7 @@ async function streamStoreData() {
 streamStoreData()
 
 const app = express();
+const server = require('http').createServer(app);
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -454,4 +457,6 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/');
 };
 
-export default httpServerHandler(app);
+app.listen(port, () => {
+  console.log("server starter on port: ", port)
+})
