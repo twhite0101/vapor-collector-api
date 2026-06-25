@@ -1,12 +1,13 @@
 {
-  "name": "express",
+  "name": "vapor_collector_api",
   "version": "1.0.0",
-  "description": "Middlewear to handle Steam Web API requests",
+  "description": "Express backend app to handle Steam Web API requests",
   "license": "ISC",
   "author": "",
   "type": "commonjs",
   "main": "steam_api.js",
   "scripts": {
+    "start": "node server",
     "devStart": "concurrently \"nodemon steam_api.js\" \"nodemon scraper.js\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
