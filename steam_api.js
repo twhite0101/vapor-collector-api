@@ -60,7 +60,7 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new SteamStrategy({
-        returnURL: process.env.PROD_API_URL + 'auth/steam/return' || 'http://localhost:3000/auth/steam/return',
+        returnURL: process.env.PROD_API_URL + '/auth/steam/return' || 'http://localhost:3000/auth/steam/return',
         realm: process.env.PROD_API_URL || 'http://localhost:3000',
         apiKey: process.env.STEAM_API_KEY
     },
@@ -459,5 +459,5 @@ function ensureAuthenticated(req, res, next) {
 };
 
 app.listen(port, () => {
-  console.log("server starter on port: ", port)
+  console.log("server started on port: ", port)
 })
