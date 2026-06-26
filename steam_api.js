@@ -34,6 +34,8 @@ streamStoreData()
 const app = express();
 const server = require('http').createServer(app);
 
+app.set('trust proxy', 1);
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 
@@ -47,8 +49,14 @@ app.use(express.json());
 
 app.use(session({
     secret: process.env.SECRET_SESSION_KEY,
-    resave: true,
-    saveUninitialized: true
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 2 * 60 * 60 * 1000,
+      secure: true,
+      sameSite: 'none',
+      httpOnly: true
+    }
 }));
 
 passport.serializeUser(function(user, done) {
@@ -88,7 +96,13 @@ app.get('/auth/steam/return',
       const secretKey = process.env.ACCESS_TOKEN_KEY;
       const options = { expiresIn: 2 * 60 * 60 * 1000 };
       const accessToken = jwt.sign(payload, secretKey, options);
-      res.cookie('access', accessToken, { maxAge: 2 * 60 * 60 * 1000, httpOnly: true });
+      res.cookie('access', accessToken, {
+        maxAge: 2 * 60 * 60 * 1000,
+        secure: true,
+        sameSite: 'none',
+        httpOnly: true,
+        path: '/'
+      });
       res.redirect(process.env.PROD_URL + '?lg=true' || 'http://localhost:4200/?lg=true');
     })(req, res, next)
   });
